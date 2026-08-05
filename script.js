@@ -8,26 +8,24 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
   let hasPoppedFinale = false;
 
-  // Background Audio Setup & Browser Autoplay Fix
+  // Background Cinema Sound Track & Autoplay unlock
   const bgAudio = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3'); 
   bgAudio.loop = true;
-  bgAudio.volume = 0.4;
+  bgAudio.volume = 0.35;
 
   let audioInitialized = false;
 
-  // Unlocks browser autoplay on first user interaction
   function initAudioOnUserInteraction() {
     if (!audioInitialized) {
       bgAudio.play().then(() => {
         audioInitialized = true;
         if (muteBtn) muteBtn.textContent = "🔊";
       }).catch((err) => {
-        console.log("Audio waiting for user gesture:", err);
+        console.log("Audio awaiting gesture:", err);
       });
     }
   }
 
-  // Event listeners for unlocking audio on first touch/click
   window.addEventListener("click", initAudioOnUserInteraction, { once: true });
   window.addEventListener("touchstart", initAudioOnUserInteraction, { once: true });
   viewport.addEventListener("scroll", initAudioOnUserInteraction, { once: true });
@@ -42,23 +40,23 @@ document.addEventListener("DOMContentLoaded", () => {
     triggerHaptic();
 
     confetti({
-      particleCount: 90,
-      spread: 80,
+      particleCount: 85,
+      spread: 75,
       origin: { y: 0.6 },
-      colors: ['#00ffcc', '#ff71ce', '#fdbb2d', '#ff007f']
+      colors: ['#e5b25d', '#ff2a5f', '#fcf8ed', '#580c1f']
     });
 
     setTimeout(() => {
       confetti({
-        particleCount: 45,
+        particleCount: 40,
         angle: 60,
-        spread: 60,
+        spread: 55,
         origin: { x: 0, y: 0.7 }
       });
       confetti({
-        particleCount: 45,
+        particleCount: 40,
         angle: 120,
-        spread: 60,
+        spread: 55,
         origin: { x: 1, y: 0.7 }
       });
     }, 200);
@@ -118,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Audio Toggle Button logic
   if (muteBtn) {
     muteBtn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -136,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCanvas();
 });
 
+// Projector Light Dust Particles Engine
 function initCanvas() {
   const canvas = document.getElementById("particleCanvas");
   if (!canvas) return;
@@ -149,13 +147,13 @@ function initCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
-  const particles = Array.from({ length: 35 }, () => ({
+  const particles = Array.from({ length: 30 }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
-    size: Math.random() * 3 + 1,
-    color: "#00ffcc",
-    speedY: Math.random() * 0.6 + 0.2,
-    speedX: (Math.random() - 0.5) * 0.3,
+    radius: Math.random() * 2 + 0.5,
+    color: "rgba(229, 178, 93, 0.35)",
+    speedY: Math.random() * 0.4 + 0.1,
+    speedX: (Math.random() - 0.5) * 0.2,
   }));
 
   function animate() {
@@ -168,8 +166,10 @@ function initCanvas() {
       if (p.y < 0) p.y = height;
       if (p.x < 0) p.x = width;
 
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
-      ctx.fillRect(p.x, p.y, p.size, p.size);
+      ctx.fill();
     });
 
     requestAnimationFrame(animate);
