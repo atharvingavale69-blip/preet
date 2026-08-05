@@ -8,43 +8,62 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
   let hasPoppedFinale = false;
 
-  // 1. Native Touch Haptic Vibration
+  // Background Audio Setup & Browser Autoplay Fix
+  const bgAudio = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3'); 
+  bgAudio.loop = true;
+  bgAudio.volume = 0.4;
+
+  let audioInitialized = false;
+
+  // Unlocks browser autoplay on first user interaction
+  function initAudioOnUserInteraction() {
+    if (!audioInitialized) {
+      bgAudio.play().then(() => {
+        audioInitialized = true;
+        if (muteBtn) muteBtn.textContent = "🔊";
+      }).catch((err) => {
+        console.log("Audio waiting for user gesture:", err);
+      });
+    }
+  }
+
+  // Event listeners for unlocking audio on first touch/click
+  window.addEventListener("click", initAudioOnUserInteraction, { once: true });
+  window.addEventListener("touchstart", initAudioOnUserInteraction, { once: true });
+  viewport.addEventListener("scroll", initAudioOnUserInteraction, { once: true });
+
   function triggerHaptic() {
     if ("vibrate" in navigator) {
       navigator.vibrate(25);
     }
   }
 
-  // 2. Confetti Explosion Feature (Mobile-Optimized)
   function launchConfetti() {
     triggerHaptic();
 
-    // Center Burst
     confetti({
-      particleCount: 80,
-      spread: 70,
+      particleCount: 90,
+      spread: 80,
       origin: { y: 0.6 },
-      colors: ['#EAB308', '#F97316', '#FFFFFF', '#EC4899', '#3B82F6']
+      colors: ['#00ffcc', '#ff71ce', '#fdbb2d', '#ff007f']
     });
 
-    // Side Cannon Streamers
     setTimeout(() => {
       confetti({
-        particleCount: 40,
+        particleCount: 45,
         angle: 60,
-        spread: 55,
+        spread: 60,
         origin: { x: 0, y: 0.7 }
       });
       confetti({
-        particleCount: 40,
+        particleCount: 45,
         angle: 120,
-        spread: 55,
+        spread: 60,
         origin: { x: 1, y: 0.7 }
       });
     }, 200);
   }
 
-  // 3. Intersection Observer with Emergent Zoom Trigger (Threshold tuned to 0.4 for smooth mobile response)
   const observerOptions = {
     root: viewport,
     threshold: 0.4
@@ -62,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
           updateNavDots(currentIndex);
           triggerHaptic();
 
-          // Auto Confetti pop when user reaches Finale (Chapter 7)
           if (currentIndex === 7 && !hasPoppedFinale) {
             launchConfetti();
             hasPoppedFinale = true;
@@ -74,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cards.forEach((card) => observer.observe(card));
 
-  // 4. Bottom Nav Dot Click
   navDots.forEach((dot) => {
     dot.addEventListener("click", () => {
       const idx = parseInt(dot.getAttribute("data-index"), 10);
@@ -95,52 +112,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 5. Touch Swipe Gesture Engine
-  let startY = 0;
-  let endY = 0;
-
-  viewport.addEventListener("touchstart", (e) => {
-    startY = e.touches[0].clientY;
-  }, { passive: true });
-
-  viewport.addEventListener("touchend", (e) => {
-    endY = e.changedTouches[0].clientY;
-    handleGesture();
-  }, { passive: true });
-
-  function handleGesture() {
-    const diff = startY - endY;
-    if (Math.abs(diff) > 40) {
-      if (diff > 0 && currentIndex < cards.length - 1) {
-        scrollToCard(currentIndex + 1);
-      } else if (diff < 0 && currentIndex > 0) {
-        scrollToCard(currentIndex - 1);
-      }
-    }
-  }
-
-  // 6. Celebration Button Tap Event -> Burst Confetti
   if (celebrateBtn) {
     celebrateBtn.addEventListener("click", () => {
       launchConfetti();
     });
   }
 
-  // 7. Audio Toggle
-  let isMuted = false;
+  // Audio Toggle Button logic
   if (muteBtn) {
-    muteBtn.addEventListener("click", () => {
-      isMuted = !isMuted;
-      muteBtn.textContent = isMuted ? "🔇" : "🔊";
+    muteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
       triggerHaptic();
+      if (bgAudio.paused) {
+        bgAudio.play();
+        muteBtn.textContent = "🔊";
+      } else {
+        bgAudio.pause();
+        muteBtn.textContent = "🔇";
+      }
     });
   }
 
-  // Background Particles Engine
   initCanvas();
 });
 
-// Canvas Background Render Engine
 function initCanvas() {
   const canvas = document.getElementById("particleCanvas");
   if (!canvas) return;
@@ -154,13 +149,13 @@ function initCanvas() {
     height = canvas.height = window.innerHeight;
   });
 
-  const particles = Array.from({ length: 30 }, () => ({
+  const particles = Array.from({ length: 35 }, () => ({
     x: Math.random() * width,
     y: Math.random() * height,
-    radius: Math.random() * 2 + 1,
-    color: "rgba(234, 179, 8, 0.4)",
-    speedY: Math.random() * 0.5 + 0.2,
-    speedX: (Math.random() - 0.5) * 0.2,
+    size: Math.random() * 3 + 1,
+    color: "#00ffcc",
+    speedY: Math.random() * 0.6 + 0.2,
+    speedX: (Math.random() - 0.5) * 0.3,
   }));
 
   function animate() {
@@ -172,12 +167,9 @@ function initCanvas() {
 
       if (p.y < 0) p.y = height;
       if (p.x < 0) p.x = width;
-      if (p.x > width) p.x = 0;
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
       ctx.fillStyle = p.color;
-      ctx.fill();
+      ctx.fillRect(p.x, p.y, p.size, p.size);
     });
 
     requestAnimationFrame(animate);
