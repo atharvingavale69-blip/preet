@@ -1,14 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Limelight&family=Cinzel:wght@600;700&family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
 
 :root {
-  --bg: #0d0221;
-  --card-bg: rgba(26, 14, 52, 0.92);
-  --text-main: #00ffcc;
-  --text-muted: #ff71ce;
-  --accent-gold: #fdbb2d;
-  --accent-terracotta: #ff007f;
-  --border-color: #00ffcc;
-  --shadow-lg: 0 0 25px rgba(0, 255, 204, 0.35);
+  --bg: #0a0508;
+  --curtain-red: #580c1f;
+  --card-bg: #120910;
+  --text-main: #fcf8ed;
+  --text-muted: #cbb8a0;
+  --accent-gold: #e5b25d;
+  --accent-neon: #ff2a5f;
+  --border-color: rgba(229, 178, 93, 0.4);
+  --shadow-lg: 0 25px 50px rgba(0, 0, 0, 0.9);
 }
 
 * {
@@ -26,21 +27,20 @@ html, body {
   height: 100dvh;
   overflow: hidden;
   background-color: var(--bg);
-  font-family: 'VT323', monospace;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   color: var(--text-main);
-  letter-spacing: 1px;
 }
 
-/* CRT Overlay Effect */
-body::before {
-  content: " ";
-  display: block;
+/* Background Film Grain Overlay */
+body::after {
+  content: "";
   position: fixed;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 999;
-  background-size: 100% 3px, 6px 100%;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  background-size: 3px 3px;
   pointer-events: none;
+  z-index: 999;
+  opacity: 0.6;
 }
 
 #particleCanvas {
@@ -79,26 +79,41 @@ body::before {
   padding: 20px 16px 80px 16px;
 }
 
-/* Retro Card Container */
+/* Movie Screen Card Frame */
 .card-inner {
   width: 100%;
   max-width: 420px;
   height: 100%;
   max-height: 680px;
   background: var(--card-bg);
-  border: 3px solid var(--border-color);
-  border-radius: 4px;
+  border: 4px solid var(--accent-gold);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: var(--shadow-lg), inset 0 0 15px rgba(0, 255, 204, 0.2);
+  box-shadow: 0 0 30px rgba(229, 178, 93, 0.25), var(--shadow-lg);
+  position: relative;
 
-  /* Touch Emergent Zoom Properties */
-  transform: scale(0.85) translateY(30px);
+  /* Emergent Cinema Reel Zoom Animation */
+  transform: scale(0.86) translateY(20px);
   opacity: 0.3;
   will-change: transform, opacity;
-  transition: transform 0.5s steps(8, end), opacity 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
 }
+
+/* Side Velvet Curtains Effect */
+.card-inner::before, .card-inner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  background: linear-gradient(90deg, #300611, var(--curtain-red), #20040b);
+  z-index: 10;
+  pointer-events: none;
+}
+.card-inner::before { left: 0; border-right: 1px solid rgba(0,0,0,0.5); }
+.card-inner::after { right: 0; border-left: 1px solid rgba(0,0,0,0.5); }
 
 .snap-card.active-card .card-inner {
   transform: scale(1) translateY(0);
@@ -111,21 +126,22 @@ body::before {
 }
 
 .hero-badge {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.65rem;
+  font-family: 'Limelight', cursive;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
   color: var(--accent-gold);
   text-transform: uppercase;
   margin-bottom: 16px;
-  text-shadow: 2px 2px #ff007f;
+  text-shadow: 0 0 10px rgba(229, 178, 93, 0.5);
 }
 
 .hero-title {
-  font-family: 'VT323', monospace;
-  font-size: 3.5rem;
-  line-height: 1;
+  font-family: 'Playfair Display', serif;
+  font-size: 3.2rem;
+  line-height: 1.05;
   margin-bottom: 32px;
   color: #fff;
-  text-shadow: 3px 3px var(--accent-terracotta);
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
 }
 
 .swipe-indicator {
@@ -133,23 +149,33 @@ body::before {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
-  animation: bounce 1.5s infinite;
+  animation: bounce 2s infinite;
 }
 
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-8px); }
 }
 
+/* Cinema Media Screen Viewport */
 .card-media {
   width: 100%;
   flex: 1.2;
   overflow: hidden;
   position: relative;
   background: #000;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: 3px solid var(--accent-gold);
+}
+
+/* Projector Screen Glow Effect */
+.card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+  pointer-events: none;
 }
 
 .card-media img {
@@ -157,9 +183,8 @@ body::before {
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: contrast(110%) saturate(120%);
-  transform: scale(1.1);
-  transition: transform 0.6s ease;
+  transform: scale(1.15);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .snap-card.active-card .card-media img {
@@ -173,93 +198,100 @@ body::before {
 }
 
 .card-body {
-  padding: 20px;
+  padding: 20px 24px;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background: linear-gradient(180deg, rgba(18, 9, 16, 0.95), rgba(10, 5, 8, 1));
 }
 
 .chapter-badge {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.55rem;
-  color: var(--accent-terracotta);
+  font-family: 'Limelight', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--accent-gold);
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   display: block;
 }
 
 .card-title {
-  font-size: 2rem;
-  margin-bottom: 6px;
-  line-height: 1.1;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+  line-height: 1.2;
   color: #fff;
-  text-shadow: 2px 2px #000;
 }
 
 .card-story {
-  font-size: 1.2rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
-  line-height: 1.3;
-  margin-bottom: 10px;
+  line-height: 1.45;
+  margin-bottom: 12px;
 }
 
 .card-quote {
-  font-size: 1.1rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.92rem;
   font-style: italic;
   color: var(--accent-gold);
   border-left: 3px solid var(--accent-gold);
-  padding-left: 10px;
-  background: rgba(253, 187, 45, 0.1);
+  padding-left: 12px;
+  background: rgba(229, 178, 93, 0.05);
 }
 
-/* Retro Arcade Button */
+/* Vintage Cinema Ticket Style Button */
 .celebrate-btn {
   width: 100%;
   padding: 14px;
-  border-radius: 0px;
-  border: 2px solid #fff;
-  background: var(--accent-terracotta);
-  color: #fff;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.7rem;
+  border-radius: 6px;
+  border: 1px dashed var(--accent-gold);
+  background: linear-gradient(135deg, #7a122a, #420816);
+  color: var(--accent-gold);
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
   cursor: pointer;
-  box-shadow: 4px 4px 0px #000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
   margin-top: 10px;
 }
 
 .celebrate-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px #000;
+  transform: scale(0.97);
 }
 
+/* Movie Ticket Strip Bottom Nav */
 .touch-nav-bar {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2000;
-  background: #000;
-  border: 2px solid var(--border-color);
-  padding: 8px 14px;
+  background: rgba(18, 9, 16, 0.9);
+  border: 1px solid var(--accent-gold);
+  padding: 8px 16px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 3px 3px 0px var(--accent-terracotta);
+  gap: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
 }
 
 .nav-dot {
-  width: 10px;
-  height: 10px;
-  background: rgba(0, 255, 204, 0.3);
-  border: 1px solid var(--border-color);
-  transition: all 0.2s steps(4);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(229, 178, 93, 0.3);
+  transition: all 0.3s ease;
 }
 
 .nav-dot.active {
-  width: 22px;
+  width: 20px;
+  border-radius: 10px;
   background: var(--accent-gold);
-  box-shadow: 0 0 8px var(--accent-gold);
+  box-shadow: 0 0 10px var(--accent-gold);
 }
 
 .touch-audio-btn {
@@ -267,15 +299,13 @@ body::before {
   top: 20px;
   right: 20px;
   z-index: 2000;
-  width: 45px;
-  height: 45px;
-  border: 2px solid var(--border-color);
-  background: #000;
-  color: var(--text-main);
-  font-family: 'VT323', monospace;
-  font-size: 1.2rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-gold);
+  background: rgba(18, 9, 16, 0.85);
+  color: var(--accent-gold);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 3px 3px 0px var(--accent-terracotta);
 }
