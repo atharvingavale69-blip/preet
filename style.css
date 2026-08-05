@@ -1,18 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,600&display=swap');
 
 :root {
-  /* Warm Journal / Editorial Story Theme (Not Dark, Extremely Decent) */
-  --bg: #F8F6F0;                  /* Soft Warm Cream Backdrop */
-  --card-bg: rgba(255, 255, 255, 0.92);
-  --text-main: #1C1917;           /* Warm Deep Ink */
-  --text-muted: #78716C;          /* Muted Stone Gray */
+  /* Ethereal Velvet Canvas - Luxury Non-Dark Editorial Aesthetic */
+  --bg: #FAF7F2;                     /* Warm Champagne Canvas Backdrop */
+  --card-bg: rgba(255, 255, 255, 0.94);
+  --text-main: #121212;              /* Deep Charcoal Ink */
+  --text-muted: #737373;             /* Warm Editorial Gray */
   
-  --accent-gold: #B45309;         /* Antique Amber/Gold */
-  --accent-ink: #0F172A;          /* Deep Narrative Indigo */
-  --accent-glow: rgba(180, 83, 9, 0.15);
+  --accent-gold: #C59B27;            /* Antique Champagne Gold */
+  --accent-terracotta: #B45309;      /* Deep Amber Highlight */
+  --accent-glow: rgba(197, 155, 39, 0.2);
   
-  --border-color: rgba(214, 211, 209, 0.8);
-  --card-shadow: 0 20px 40px -15px rgba(28, 25, 23, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.9);
+  --border-color: rgba(229, 226, 218, 0.9);
+  --card-shadow: 0 30px 60px -12px rgba(18, 18, 18, 0.08), 0 0 1px rgba(0, 0, 0, 0.12);
 }
 
 * {
@@ -33,91 +33,32 @@ html, body {
 }
 
 /* =========================================
-   Emergent Story Keyframe Animations 
+   Emergent Zoom-In & Scroll Keyframe Animations 
 ========================================= */
 
-/* Story Card Emergence Animation */
-@keyframes cardEmerge3D {
+@keyframes emergentZoomIn {
   0% {
     opacity: 0;
-    transform: translateY(60px) scale(0.9) rotateX(-12deg);
-    filter: blur(8px);
+    transform: scale(0.82) translateY(80px) rotateX(-10deg);
+    filter: blur(12px);
   }
   60% {
     filter: blur(0px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1) rotateX(0deg);
+    transform: scale(1) translateY(0) rotateX(0deg);
   }
+}
+
+@keyframes sideNavGlow {
+  0%, 100% { box-shadow: 0 0 6px var(--accent-gold); }
+  50% { box-shadow: 0 0 14px var(--accent-terracotta); }
 }
 
 @keyframes subtleFloat {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-}
-
-@keyframes storyLinePulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.9; }
-}
-
-/* Fixed Header HUD */
-.journey-hud {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  background: rgba(248, 246, 240, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-color);
-  padding: clamp(10px, 1.5vh, 16px) clamp(16px, 3vw, 32px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.journey-title-hud {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.85rem, 1.8vw, 1.15rem);
-  letter-spacing: 2px;
-  color: var(--text-main);
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.journey-tracker {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: clamp(120px, 22vw, 240px);
-}
-
-.track-bar-bg {
-  flex: 1;
-  height: 4px;
-  background: #E7E5E4;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.track-bar-fill {
-  height: 100%;
-  width: 0%;
-  background: var(--accent-gold);
-  border-radius: 10px;
-  transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.hud-status {
-  font-size: 0.7rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--accent-gold);
-  font-weight: 700;
+  50% { transform: translateY(-5px); }
 }
 
 #particleCanvas {
@@ -128,6 +69,76 @@ html, body {
   height: 100vh;
   pointer-events: none;
   z-index: 0;
+}
+
+/* =========================================
+   SIDE NAVIGATION MARKERS (Chapter Indicator)
+========================================= */
+.side-nav-markers {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-marker-item {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(115, 115, 115, 0.25);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-marker-item::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-main);
+  background: var(--card-bg);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.nav-marker-item:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0px);
+}
+
+.nav-marker-item.active {
+  width: 14px;
+  height: 14px;
+  background: var(--accent-gold);
+  border-color: #FFFFFF;
+  animation: sideNavGlow 3s infinite ease-in-out;
+}
+
+.nav-marker-item.active::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-gold);
+  opacity: 0.6;
 }
 
 /* Stack Scroll Section Container */
@@ -148,36 +159,36 @@ html, body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  perspective: 1200px; /* Essential for 3D emergence */
+  perspective: 1400px; /* High perspective for emergent zoom-in */
 }
 
-/* Story Book Card Layout */
+/* Emergent Zoom Card Layout */
 .journey-card {
   position: absolute;
-  width: calc(100% - 32px);
-  max-width: 880px;
+  width: calc(100% - 40px);
+  max-width: 920px;
   background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: clamp(16px, 2.5vw, 24px);
-  padding: clamp(20px, 3vw, 36px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: clamp(20px, 3vw, 32px);
+  padding: clamp(24px, 3.5vw, 42px);
   border: 1px solid var(--border-color);
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: clamp(20px, 3vw, 36px);
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: clamp(22px, 3.5vw, 40px);
   align-items: center;
   box-shadow: var(--card-shadow);
-  transform-origin: center bottom;
+  transform-origin: center center;
   will-change: transform, opacity, filter;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, filter 0.5s ease;
 }
 
-/* Emergent Effect applied dynamically or via active class */
+/* Zoom-in Class for JS Trigger */
 .journey-card.is-emerging {
-  animation: cardEmerge3D 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: emergentZoomIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Hero / Opening Chapter Card */
+/* Hero / Cover Card */
 .hero-card {
   text-align: center;
   display: flex;
@@ -185,27 +196,28 @@ html, body {
   align-items: center;
   justify-content: center;
   background: #FFFFFF;
-  padding: clamp(40px, 6vw, 70px) clamp(20px, 4vw, 40px);
-  border: 1px solid #E7E5E4;
+  padding: clamp(48px, 7vw, 80px) clamp(24px, 5vw, 48px);
+  border-radius: clamp(20px, 3vw, 32px);
+  border: 1px solid rgba(229, 226, 218, 0.8);
 }
 
 .hero-subtitle {
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.75rem, 1.5vw, 0.85rem);
-  letter-spacing: 4px;
+  font-size: clamp(0.75rem, 1.5vw, 0.88rem);
+  letter-spacing: 5px;
   text-transform: uppercase;
-  color: var(--accent-gold);
-  font-weight: 600;
-  margin-bottom: 12px;
+  color: var(--accent-terracotta);
+  font-weight: 700;
+  margin-bottom: 16px;
 }
 
 .hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.5rem, 6.5vw, 4.8rem);
+  font-size: clamp(2.8rem, 7vw, 5.2rem);
   font-weight: 600;
-  line-height: 1.05;
+  line-height: 1;
   color: var(--text-main);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .hero-title em {
@@ -215,22 +227,23 @@ html, body {
 }
 
 .hero-footer-text {
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--text-muted);
   font-size: clamp(0.7rem, 1.2vw, 0.8rem);
   font-weight: 600;
 }
 
-/* Story Card Image Container */
+/* Story Image Frame */
 .card-img-wrap {
   width: 100%;
   aspect-ratio: 4 / 3;
-  border-radius: clamp(12px, 1.8vw, 16px);
+  border-radius: clamp(14px, 2vw, 20px);
   overflow: hidden;
   position: relative;
-  background: #F5F5F4;
+  background: #F0EDE6;
   border: 1px solid var(--border-color);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.06);
 }
 
 .card-img-wrap img {
@@ -238,14 +251,14 @@ html, body {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .journey-card:hover .card-img-wrap img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
-/* Story Narrative Content */
+/* Card Text Content */
 .card-content {
   display: flex;
   flex-direction: column;
@@ -254,63 +267,62 @@ html, body {
 
 .chapter-badge {
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.65rem, 1vw, 0.75rem);
-  letter-spacing: 2px;
+  font-size: clamp(0.68rem, 1vw, 0.78rem);
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  color: var(--accent-gold);
+  color: var(--accent-terracotta);
   font-weight: 700;
-  margin-bottom: clamp(8px, 1.2vh, 12px);
+  margin-bottom: clamp(10px, 1.5vh, 14px);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .chapter-badge::before {
   content: '';
   display: inline-block;
-  width: 18px;
-  height: 1px;
-  background: var(--accent-gold);
+  width: 22px;
+  height: 1.5px;
+  background: var(--accent-terracotta);
 }
 
 .card-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
-  line-height: 1.15;
-  margin-bottom: clamp(8px, 1.2vh, 12px);
+  font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+  line-height: 1.12;
+  margin-bottom: clamp(10px, 1.5vh, 14px);
   font-weight: 600;
   color: var(--text-main);
 }
 
 .card-story {
-  font-size: clamp(0.88rem, 1.3vw, 0.98rem);
+  font-size: clamp(0.9rem, 1.35vw, 1.02rem);
   color: var(--text-muted);
-  line-height: 1.6;
-  margin-bottom: clamp(10px, 1.5vh, 16px);
+  line-height: 1.65;
+  margin-bottom: clamp(12px, 1.8vh, 18px);
 }
 
-/* Story Quote Highlight Box */
 .card-quote {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(0.92rem, 1.4vw, 1.08rem);
+  font-size: clamp(0.95rem, 1.45vw, 1.1rem);
   color: var(--text-main);
   line-height: 1.5;
   font-style: italic;
   border-left: 2px solid var(--accent-gold);
-  padding: 8px 0 8px 16px;
-  margin-bottom: clamp(10px, 1.5vh, 16px);
-  background: rgba(180, 83, 9, 0.04);
-  border-radius: 0 8px 8px 0;
+  padding: 8px 0 8px 18px;
+  margin-bottom: clamp(12px, 1.8vh, 18px);
+  background: rgba(197, 155, 39, 0.05);
+  border-radius: 0 10px 10px 0;
 }
 
 .bday-wish-tag {
-  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
-  color: var(--accent-gold);
-  font-weight: 600;
+  font-size: clamp(0.78rem, 1.2vw, 0.88rem);
+  color: var(--accent-terracotta);
+  font-weight: 700;
   letter-spacing: 0.5px;
 }
 
-/* Destination Ending Section */
+/* Destination Final Section */
 .destination-section {
   width: 100vw;
   min-height: 100vh;
@@ -320,8 +332,8 @@ html, body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 80px 20px;
-  background: #F3F0E6;
+  padding: 80px 24px;
+  background: #F4EFF8;
   border-top: 1px solid var(--border-color);
   position: relative;
   z-index: 2;
@@ -329,52 +341,52 @@ html, body {
 
 .dest-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.6rem, 7vw, 5.5rem);
-  margin-bottom: 16px;
+  font-size: clamp(2.8rem, 8vw, 5.8rem);
+  margin-bottom: 18px;
   line-height: 1.05;
   color: var(--text-main);
 }
 
 .dest-quote {
-  max-width: 650px;
-  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  max-width: 680px;
+  font-size: clamp(0.98rem, 1.7vw, 1.25rem);
   color: var(--text-muted);
-  line-height: 1.6;
+  line-height: 1.65;
   font-style: italic;
   font-family: 'Playfair Display', serif;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
 .celebrate-btn {
   background: var(--text-main);
   color: #FFFFFF;
   border: none;
-  padding: 16px 42px;
+  padding: 18px 46px;
   font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   letter-spacing: 2px;
   text-transform: uppercase;
   border-radius: 50px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(28, 25, 23, 0.15);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 12px 28px rgba(18, 18, 18, 0.15);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .celebrate-btn:hover {
-  transform: translateY(-2px);
-  background: var(--accent-gold);
-  box-shadow: 0 14px 30px rgba(180, 83, 9, 0.25);
+  transform: translateY(-3px) scale(1.02);
+  background: var(--accent-terracotta);
+  box-shadow: 0 16px 36px rgba(180, 83, 9, 0.3);
 }
 
-/* Floating Audio / Mute Button */
+/* Floating Audio Control */
 .floating-mute-btn {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 28px;
+  left: 28px; /* Left side shift so right markers remain unobstructed */
   z-index: 9999;
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: #FFFFFF;
   border: 1px solid var(--border-color);
@@ -383,14 +395,14 @@ html, body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
   animation: subtleFloat 4s infinite ease-in-out;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .floating-mute-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  transform: scale(1.1);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
 }
 
 .mute-svg {
@@ -398,14 +410,14 @@ html, body {
   height: 20px;
 }
 
-/* Initial Entry Overlay */
+/* Entry Overlay Screen */
 .entry-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: rgba(248, 246, 240, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(250, 247, 242, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -416,90 +428,88 @@ html, body {
   text-align: center;
   background: #FFFFFF;
   border: 1px solid var(--border-color);
-  padding: 44px 32px;
-  border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  padding: 48px 36px;
+  border-radius: 28px;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.06);
   max-width: 90%;
-  width: 400px;
+  width: 420px;
 }
 
 .entry-badge {
   font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  letter-spacing: 2px;
-  color: var(--accent-gold);
-  margin-bottom: 12px;
+  font-size: 0.78rem;
+  letter-spacing: 2.5px;
+  color: var(--accent-terracotta);
+  margin-bottom: 14px;
   font-weight: 700;
 }
 
 .entry-title {
   font-family: 'Playfair Display', serif;
-  font-size: 2.2rem;
+  font-size: 2.3rem;
   color: var(--text-main);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .entry-sub {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: var(--text-muted);
-  margin-bottom: 28px;
+  margin-bottom: 30px;
 }
 
 .entry-btn {
   background: var(--text-main);
   color: #FFFFFF;
   border: none;
-  padding: 14px 36px;
+  padding: 15px 40px;
   font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
-  letter-spacing: 1.5px;
-  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 2px;
+  font-weight: 700;
   border-radius: 50px;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: transform 0.25s ease, background 0.25s ease;
 }
 
 .entry-btn:hover {
   transform: translateY(-2px);
-  background: var(--accent-gold);
+  background: var(--accent-terracotta);
 }
 
 /* =========================================
-   MOBILE RESPONSIVE & TOUCH EMERGENCE
+   MOBILE RESPONSIVE & SIDE MARKERS FIT
 ========================================= */
 @media (max-width: 768px) {
+  .side-nav-markers {
+    right: 12px;
+    gap: 12px;
+  }
+
+  .nav-marker-item {
+    width: 9px;
+    height: 9px;
+  }
+
+  .nav-marker-item::after {
+    display: none; /* Hide labels on small touch screens for clean view */
+  }
+
   .journey-card {
     grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 16px;
-    border-radius: 20px;
-    
-    /* Mobile-optimized Emergent perspective shift */
-    transform-origin: center 80%;
+    gap: 14px;
+    padding: 18px;
+    width: calc(100% - 36px);
+    border-radius: 22px;
   }
 
   .card-img-wrap {
     aspect-ratio: 16 / 10;
   }
 
-  .card-title {
-    font-size: clamp(1.4rem, 5vw, 1.8rem);
-  }
-
-  .card-story {
-    font-size: 0.88rem;
-    margin-bottom: 8px;
-  }
-
   .floating-mute-btn {
-    bottom: 16px;
-    right: 16px;
+    bottom: 18px;
+    left: 18px;
     width: 44px;
     height: 44px;
-  }
-
-  /* Smooth 60FPS mobile scroll response */
-  .journey-card {
-    will-change: transform, opacity;
   }
 }
