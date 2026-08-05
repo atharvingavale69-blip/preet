@@ -6,18 +6,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const muteBtn = document.getElementById("muteBtn");
 
   let currentIndex = 0;
+  let hasPoppedFinale = false;
 
-  // 1. Native Touch Haptic Vibration (If Supported by Browser)
+  // 1. Native Touch Haptic Vibration
   function triggerHaptic() {
     if ("vibrate" in navigator) {
-      navigator.vibrate(15);
+      navigator.vibrate(25);
     }
   }
 
-  // 2. Intersection Observer for Active Card Detection & Navigation Sync
+  // 2. Confetti Explosion Feature (Mobile-Optimized)
+  function launchConfetti() {
+    triggerHaptic();
+
+    // Center Burst
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#EAB308', '#F97316', '#FFFFFF', '#EC4899', '#3B82F6']
+    });
+
+    // Side Cannon Streamers
+    setTimeout(() => {
+      confetti({
+        particleCount: 40,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.7 }
+      });
+      confetti({
+        particleCount: 40,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.7 }
+      });
+    }, 200);
+  }
+
+  // 3. Intersection Observer for Active Card Detection & Finale Auto-Pop
   const observerOptions = {
     root: viewport,
-    threshold: 0.6 // Card 60% view me aate hi active hogi
+    threshold: 0.6
   };
 
   const observer = new IntersectionObserver((entries) => {
@@ -31,6 +61,12 @@ document.addEventListener("DOMContentLoaded", () => {
           currentIndex = parseInt(id.replace("chapter-", ""), 10);
           updateNavDots(currentIndex);
           triggerHaptic();
+
+          // Auto Confetti pop when user reaches Finale (Chapter 7)
+          if (currentIndex === 7 && !hasPoppedFinale) {
+            launchConfetti();
+            hasPoppedFinale = true;
+          }
         }
       }
     });
@@ -38,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cards.forEach((card) => observer.observe(card));
 
-  // 3. Bottom Nav Dot Click to Direct Scroll
+  // 4. Bottom Nav Dot Click
   navDots.forEach((dot) => {
     dot.addEventListener("click", () => {
       const idx = parseInt(dot.getAttribute("data-index"), 10);
@@ -59,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 4. Touch Swipe Gesture Engine (Manual fallback & smooth feel)
+  // 5. Touch Swipe Gesture Engine
   let startY = 0;
   let endY = 0;
 
@@ -74,26 +110,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleGesture() {
     const diff = startY - endY;
-    if (Math.abs(diff) > 40) { // Touch Threshold 40px
+    if (Math.abs(diff) > 40) {
       if (diff > 0 && currentIndex < cards.length - 1) {
-        // Swiped Up -> Go to Next
         scrollToCard(currentIndex + 1);
       } else if (diff < 0 && currentIndex > 0) {
-        // Swiped Down -> Go to Previous
         scrollToCard(currentIndex - 1);
       }
     }
   }
 
-  // 5. Celebration Event
+  // 6. Celebration Button Tap Event -> Burst Confetti
   if (celebrateBtn) {
     celebrateBtn.addEventListener("click", () => {
-      triggerHaptic();
-      alert("🎉 Happy Birthday! Wishing you an amazing year ahead!");
+      launchConfetti();
     });
   }
 
-  // 6. Audio Toggle
+  // 7. Audio Toggle
   let isMuted = false;
   if (muteBtn) {
     muteBtn.addEventListener("click", () => {
@@ -103,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 7. Background Floating Gold Particles
+  // Background Particles Engine
   initCanvas();
 });
 
