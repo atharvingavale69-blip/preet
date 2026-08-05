@@ -8,24 +8,26 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
   let hasPoppedFinale = false;
 
-  // Background Cinema Sound Track & Autoplay unlock
-  const bgAudio = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3'); 
+  // Local Audio File Path Setup
+  const bgAudio = new Audio('images/happy-birthday.mp3'); 
   bgAudio.loop = true;
-  bgAudio.volume = 0.35;
+  bgAudio.volume = 0.5;
 
   let audioInitialized = false;
 
+  // Unlocks browser autoplay restriction on first user gesture
   function initAudioOnUserInteraction() {
     if (!audioInitialized) {
       bgAudio.play().then(() => {
         audioInitialized = true;
         if (muteBtn) muteBtn.textContent = "🔊";
       }).catch((err) => {
-        console.log("Audio awaiting gesture:", err);
+        console.log("Audio awaiting user interaction:", err);
       });
     }
   }
 
+  // Event listeners for initializing audio on first touch/scroll/click
   window.addEventListener("click", initAudioOnUserInteraction, { once: true });
   window.addEventListener("touchstart", initAudioOnUserInteraction, { once: true });
   viewport.addEventListener("scroll", initAudioOnUserInteraction, { once: true });
