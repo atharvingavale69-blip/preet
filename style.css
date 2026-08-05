@@ -277,3 +277,10 @@ html, body {
   align-items: center;
   justify-content: center;
 }
+
+/* Card 3, Card 4, aur Card 5 ki images me face alignment fix */
+#chapter-3 .card-media img,
+#chapter-4 .card-media img,
+#chapter-5 .card-media img {
+  object-position: top center; /* Image ka upper portion (face) center and top me freeze ho jayega */
+}
