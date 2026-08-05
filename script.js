@@ -44,10 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 200);
   }
 
-  // 3. Intersection Observer for Active Card Detection & Finale Auto-Pop
+  // 3. Intersection Observer with Emergent Zoom Trigger (Threshold tuned to 0.4 for smooth mobile response)
   const observerOptions = {
     root: viewport,
-    threshold: 0.6
+    threshold: 0.4
   };
 
   const observer = new IntersectionObserver((entries) => {
