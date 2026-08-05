@@ -78,7 +78,7 @@ html, body {
   padding: 20px 16px 80px 16px; /* Space reserved for bottom thumb nav */
 }
 
-/* Inner Card Container */
+/* Inner Card Container - Touch Scroll Emergent Zoom State */
 .card-inner {
   width: 100%;
   max-width: 420px;
@@ -93,14 +93,18 @@ html, body {
   flex-direction: column;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
-  transform: scale(0.96);
-  opacity: 0.8;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Touch Emergent Zoom-in Base Setup */
+  transform: scale(0.82) translateY(40px);
+  opacity: 0.2;
+  will-change: transform, opacity;
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), 
+              opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Active Card Emergent Zoom In State */
 .snap-card.active-card .card-inner {
-  transform: scale(1);
+  transform: scale(1) translateY(0);
   opacity: 1;
 }
 
@@ -147,7 +151,7 @@ html, body {
   60% { transform: translateY(-50px); }
 }
 
-/* Card Media Frame */
+/* Card Media Frame & Dynamic Image Zoom */
 .card-media {
   width: 100%;
   flex: 1.2;
@@ -161,9 +165,23 @@ html, body {
   height: 100%;
   object-fit: cover;
   display: block;
+  transform: scale(1.18);
+  will-change: transform;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Card Body Section */
+.snap-card.active-card .card-media img {
+  transform: scale(1);
+}
+
+/* Card 3, Card 4, aur Card 5 ki images me face alignment fix */
+#chapter-3 .card-media img,
+#chapter-4 .card-media img,
+#chapter-5 .card-media img {
+  object-position: top center; /* Image ka upper portion (face) center and top me freeze ho jayega */
+}
+
+/* Card Body Section & Staggered Text Animations */
 .card-body {
   padding: 20px;
   flex: 1;
@@ -171,6 +189,24 @@ html, body {
   flex-direction: column;
   justify-content: center;
 }
+
+.card-body > * {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+}
+
+.snap-card.active-card .card-body > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text Stagger Delays */
+.snap-card.active-card .chapter-badge { transition-delay: 0.15s; }
+.snap-card.active-card .card-title    { transition-delay: 0.25s; }
+.snap-card.active-card .card-story    { transition-delay: 0.35s; }
+.snap-card.active-card .card-quote    { transition-delay: 0.45s; }
+.snap-card.active-card .celebrate-btn { transition-delay: 0.45s; }
 
 .chapter-badge {
   font-family: 'Cinzel', serif;
@@ -276,11 +312,4 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Card 3, Card 4, aur Card 5 ki images me face alignment fix */
-#chapter-3 .card-media img,
-#chapter-4 .card-media img,
-#chapter-5 .card-media img {
-  object-position: top center; /* Image ka upper portion (face) center and top me freeze ho jayega */
 }
