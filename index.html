@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Happy Birthday Preet! 🎂✨</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- GSAP & Canvas Confetti -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Background Birthday Audio -->
+  <audio id="bgMusic" loop preload="auto" playsinline>
+    <source src="images/happy-birthday.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Particle Canvas Background -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Top HUD (Clean without buttons) -->
+  <div class="journey-hud">
+    <div class="journey-title-hud">💖 PREET'S ROADMAP</div>
+    <div class="journey-tracker">
+      <div class="track-bar-bg">
+        <div class="track-bar-fill" id="journeyFill"></div>
+      </div>
+      <div class="hud-status" id="journeyPercent">START</div>
+    </div>
+  </div>
+
+  <div class="stack-wrapper">
+    <!-- Pinned Viewport Stack -->
+    <div class="stack-container" id="stackContainer">
+
+      <!-- HERO CARD (Card 0) -->
+      <div class="journey-card hero-card" id="card0">
+        <div class="hero-subtitle">🎉 Special Birthday Edition</div>
+        <h1 class="hero-title">Happy Birthday <em>Preet</em></h1>
+        <p class="hero-footer-text">
+          Scroll down to unwrap memories inside memories ✨
+        </p>
+      </div>
+
+      <!-- CARD 1 -->
+      <div class="journey-card" id="card1">
+        <div class="card-img-wrap">
+          <img src="images/card1.png" alt="Preet Childhood">
+        </div>
+        <div class="card-content">
+          <div class="chapter-badge">🍼 Chapter 01 • Childhood</div>
+          <h2 class="card-title">Little Dreamer</h2>
+          <p class="card-story">Where this beautiful story began. A tiny girl with big curious eyes and a heart destined for greatness.</p>
+          <div class="card-quote">"Even back then, you had that irresistible, cute little charm!"</div>
+          <div class="bday-wish-tag">🎁 Wish #1: May your inner child always stay this joyful!</div>
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="journey-card" id="card2">
+        <div class="card-img-wrap">
+          <img src="images/card2.png" alt="School & Youth">
+        </div>
+        <div class="card-content">
+          <div class="chapter-badge">📚 Chapter 02 • Rising Star</div>
+          <h2 class="card-title">Sharp & Ambitious</h2>
+          <p class="card-story">Years full of learning, friendships, and discovering how bright your future would become.</p>
+          <div class="card-quote">"You didn't just study hard; you learned how to stand out like a star."</div>
+          <div class="bday-wish-tag">⭐ Wish #2: May all your biggest career dreams come true!</div>
+        </div>
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="journey-card" id="card3">
+        <div class="card-img-wrap">
+          <img src="images/card3.jpg" alt="Strength & Resilience" style="object-fit: cover; object-position: center 20%;">
+        </div>
+        <div class="card-content">
+          <div class="chapter-badge">👑 Chapter 03 • Resilience</div>
+          <h2 class="card-title">Unshakable Strength</h2>
+          <p class="card-story">Turning life's hurdles into stepping stones, facing every single challenge with courage and grace.</p>
+          <div class="card-quote">"Behind that gorgeous soft smile is a warrior heart that never gives up."</div>
+          <div class="bday-wish-tag">🥂 Wish #3: May you always remain invincible and bold!</div>
+        </div>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="journey-card" id="card4">
+        <div class="card-img-wrap">
+          <img src="images/card4.jpg" alt="Independent Woman" style="object-fit: cover; object-position: center 20%;">
+        </div>
+        <div class="card-content">
+          <div class="chapter-badge">💄 Chapter 04 • Independence</div>
+          <h2 class="card-title">Self-Made Queen</h2>
+          <p class="card-story">Taking full ownership of your path, making bold decisions, and standing strong on your own.</p>
+          <div class="card-quote">"A fierce, independent woman who knows her worth and settles for nothing less."</div>
+          <div class="bday-wish-tag">💎 Wish #4: May your independence bring you unlimited success!</div>
+        </div>
+      </div>
+
+      <!-- CARD 5 -->
+      <div class="journey-card" id="card5">
+        <div class="card-img-wrap">
+          <img src="images/card5.jpg" alt="Glamorous Preet" style="object-fit: cover; object-position: center 20%;">
+        </div>
+        <div class="card-content">
+          <div class="chapter-badge">🔥 Chapter 05 • Glamour</div>
+          <h2 class="card-title">Dangerously Fine</h2>
+          <p class="card-story">Looking breathtaking has become second nature to you. Every look you create is iconic.</p>
+          <div class="card-quote">"Are you getting hotter with every birthday, or is it just a Preet phenomenon?"</div>
+          <div class="bday-wish-tag">💋 Wish #5: May your charm keep stunning the world!</div>
+        </div>
+      </div>
+
+      <!-- CARD 6 -->
+      <div class="journey-card" id="card6">
+        <div class="card-img-wrap">
+          <img src="images/card6.png" alt="Grace & Elegance">
+        </div>
+        <div class="card-content">
+          <div class="chapter-badge">🥻 Chapter 06 • Pure Grace</div>
+          <h2 class="card-title">Timeless Elegance</h2>
+          <p class="card-story">Draped in tradition and unmatched poise. Whenever you wear a saree, time seems to stop completely.</p>
+          <div class="card-quote">"In a world full of trends, you look like an absolute royal masterpiece in a saree."</div>
+          <div class="bday-wish-tag">✨ Wish #6: May your grace and beauty keep captivating everyone around you!</div>
+        </div>
+      </div>
+
+      <!-- CARD 7 -->
+      <div class="journey-card" id="card7">
+        <div class="card-img-wrap">
+          <img src="images/card7.jpg" alt="Kind Heart">
+        </div>
+        <div class="card-content">
+          <div class="chapter-badge">💖 Chapter 07 • Golden Heart</div>
+          <h2 class="card-title">Warmth & Soul</h2>
+          <p class="card-story">Your kindness, empathy, and how deeply you care for people around you make you truly special.</p>
+          <div class="card-quote">"Being around you feels like finding a cozy warm place in a noisy world."</div>
+          <div class="bday-wish-tag">🌹 Wish #7: May love surround you everywhere you go!</div>
+        </div>
+      </div>
+
+      <!-- CARD 8 -->
+      <div class="journey-card" id="card8">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000" alt="Future Horizon">
+        </div>
+        <div class="card-content">
+          <div class="chapter-badge">🎁 Chapter 08 • The Grand Chapter</div>
+          <h2 class="card-title">A Brand New Year</h2>
+          <p class="card-story">You've traveled through childhood, triumphs, and beauty. Now a fresh new year begins!</p>
+          <div class="card-quote">"The best chapters of your story are still waiting to be written!"</div>
+          <div class="bday-wish-tag">🍾 Wish #8: Happy Birthday to my favorite person ever!</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DESTINATION: CELEBRATION -->
+  <section class="destination-section" id="destSec">
+    <div class="chapter-badge badge-dest">🎂 BIRTHDAY DESTINATION REACHED</div>
+    <h2 class="dest-title">Happy Birthday Preet! 🥂✨</h2>
+    <p class="dest-quote">
+      "From a cute little dreamer to an inspiring, gorgeous Queen! May your smile stay intoxicating forever, and may this coming year give you all the happiness, luxury, and love you deserve!"
+    </p>
+    <button class="celebrate-btn" id="celebrateBtn">Pop Birthday Fireworks 🎆</button>
+  </section>
+
+  <!-- Bottom Right Floating Mute Button -->
+  <button id="muteBtn" class="floating-mute-btn" aria-label="Toggle Mute">
+    <svg id="soundIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mute-svg">
+      <path d="M13.5 4.06c0-.52-.39-.96-.9-.99-.52-.04-1 .31-1.1.82l-3.3 6.61H4.5c-.83 0-1.5.67-1.5 1.5v4c0 .83.67 1.5 1.5 1.5h3.7l3.3 6.61c.1.51.58.86 1.1.82.51-.03.9-.47.9-.99V4.06zM18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM16 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+    </svg>
+  </button>
+
+  <!-- External Script -->
+  <script src="script.js"></script>
+</body>
+</html>
