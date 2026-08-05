@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>A Celebration Journey</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -11,127 +11,142 @@
   <!-- Background Canvas for Particles -->
   <canvas id="particleCanvas"></canvas>
 
-  <!-- Entry Overlay -->
-  <div class="entry-overlay" id="entryOverlay">
-    <div class="entry-card">
-      <div class="entry-badge">Special Experience</div>
-      <h2 class="entry-title">A Digital Journey</h2>
-      <p class="entry-sub">Designed specifically for mobile view.</p>
-      <button class="entry-btn" id="startBtn">BEGIN JOURNEY</button>
-    </div>
-  </div>
-
-  <!-- Mobile Journey Feed -->
-  <main class="journey-feed">
+  <!-- Touch App Container (Scroll Snap Wrapper) -->
+  <main class="app-viewport" id="appViewport">
 
     <!-- Section 0: Hero -->
-    <section class="mobile-card hero-card" id="chapter-0">
-      <div class="hero-subtitle">Chapter Journey</div>
-      <h1 class="hero-title">Happy <em>Birthday!</em></h1>
-      <div class="hero-footer-text">Scroll to explore</div>
+    <section class="snap-card hero-card" id="chapter-0">
+      <div class="card-content">
+        <div class="hero-badge">Special Experience</div>
+        <h1 class="hero-title">Happy <br><em>Birthday!</em></h1>
+        <div class="swipe-indicator">
+          <span>Swipe Up to Open</span>
+          <div class="swipe-arrow">↓</div>
+        </div>
+      </div>
     </section>
 
     <!-- Card 1 -->
-    <section class="mobile-card" id="chapter-1">
-      <div class="card-media">
-        <img src="/images/card1.jpg" alt="Memory 1" loading="lazy">
+    <section class="snap-card" id="chapter-1">
+      <div class="card-inner">
+        <div class="card-media">
+          <img src="/images/card1.jpg" alt="Memory 1" loading="eager">
+        </div>
+        <div class="card-body">
+          <span class="chapter-badge">Chapter 01</span>
+          <h2 class="card-title">The First Spark</h2>
+          <p class="card-story">Every great memory begins with a simple moment that changes everything.</p>
+          <div class="card-quote">"Moments turn into memories, and memories turn into magic."</div>
+        </div>
       </div>
-      <div class="chapter-badge">Chapter 01</div>
-      <h2 class="card-title">The First Spark</h2>
-      <p class="card-story">Every great memory begins with a simple moment that changes everything.</p>
-      <div class="card-quote">"Moments turn into memories, and memories turn into magic."</div>
-      <div class="bday-wish-tag">✨ Wishing you endless smiles today.</div>
     </section>
 
     <!-- Card 2 -->
-    <section class="mobile-card" id="chapter-2">
-      <div class="card-media">
-        <img src="/images/card2.jpg" alt="Memory 2" loading="lazy">
+    <section class="snap-card" id="chapter-2">
+      <div class="card-inner">
+        <div class="card-media">
+          <img src="/images/card2.jpg" alt="Memory 2" loading="lazy">
+        </div>
+        <div class="card-body">
+          <span class="chapter-badge">Chapter 02</span>
+          <h2 class="card-title">Unforgettable Moments</h2>
+          <p class="card-story">Looking back at all the laughter, lessons, and remarkable steps taken so far.</p>
+          <div class="card-quote">"The best is yet to come."</div>
+        </div>
       </div>
-      <div class="chapter-badge">Chapter 02</div>
-      <h2 class="card-title">Unforgettable Moments</h2>
-      <p class="card-story">Looking back at all the laughter, lessons, and remarkable steps taken so far.</p>
-      <div class="card-quote">"The best is yet to come."</div>
-      <div class="bday-wish-tag">🌟 May your day shine brighter than ever.</div>
     </section>
 
     <!-- Card 3 -->
-    <section class="mobile-card" id="chapter-3">
-      <div class="card-media">
-        <img src="/images/card3.jpg" alt="Memory 3" loading="lazy">
+    <section class="snap-card" id="chapter-3">
+      <div class="card-inner">
+        <div class="card-media">
+          <img src="/images/card3.jpg" alt="Memory 3" loading="lazy">
+        </div>
+        <div class="card-body">
+          <span class="chapter-badge">Chapter 03</span>
+          <h2 class="card-title">Golden Days</h2>
+          <p class="card-story">Some days leave a permanent warmth in our hearts.</p>
+          <div class="card-quote">"Life is made of small moments like this."</div>
+        </div>
       </div>
-      <div class="chapter-badge">Chapter 03</div>
-      <h2 class="card-title">Golden Days</h2>
-      <p class="card-story">Some days leave a permanent warmth in our hearts.</p>
-      <div class="card-quote">"Life is made of small moments like this."</div>
-      <div class="bday-wish-tag">💛 Forever grateful for these times.</div>
     </section>
 
     <!-- Card 4 -->
-    <section class="mobile-card" id="chapter-4">
-      <div class="card-media">
-        <img src="/images/card4.jpg" alt="Memory 4" loading="lazy">
+    <section class="snap-card" id="chapter-4">
+      <div class="card-inner">
+        <div class="card-media">
+          <img src="/images/card4.jpg" alt="Memory 4" loading="lazy">
+        </div>
+        <div class="card-body">
+          <span class="chapter-badge">Chapter 04</span>
+          <h2 class="card-title">Joy & Laughter</h2>
+          <p class="card-story">Shared smiles make every single journey worth taking.</p>
+          <div class="card-quote">"Laughter is the shortest distance between two people."</div>
+        </div>
       </div>
-      <div class="chapter-badge">Chapter 04</div>
-      <h2 class="card-title">Joy & Laughter</h2>
-      <p class="card-story">Shared smiles make every single journey worth taking.</p>
-      <div class="card-quote">"Laughter is the shortest distance between two people."</div>
-      <div class="bday-wish-tag">🎉 Keep spreading this happiness!</div>
     </section>
 
     <!-- Card 5 -->
-    <section class="mobile-card" id="chapter-5">
-      <div class="card-media">
-        <img src="/images/card5.jpg" alt="Memory 5" loading="lazy">
+    <section class="snap-card" id="chapter-5">
+      <div class="card-inner">
+        <div class="card-media">
+          <img src="/images/card5.jpg" alt="Memory 5" loading="lazy">
+        </div>
+        <div class="card-body">
+          <span class="chapter-badge">Chapter 05</span>
+          <h2 class="card-title">New Horizons</h2>
+          <p class="card-story">Stepping into new experiences with confidence and joy.</p>
+          <div class="card-quote">"Embrace every new beginning."</div>
+        </div>
       </div>
-      <div class="chapter-badge">Chapter 05</div>
-      <h2 class="card-title">New Horizons</h2>
-      <p class="card-story">Stepping into new experiences with confidence and joy.</p>
-      <div class="card-quote">"Embrace every new beginning."</div>
-      <div class="bday-wish-tag">🚀 Reach for the stars always.</div>
     </section>
 
     <!-- Card 6 -->
-    <section class="mobile-card" id="chapter-6">
-      <div class="card-media">
-        <img src="/images/card6.jpg" alt="Memory 6" loading="lazy">
+    <section class="snap-card" id="chapter-6">
+      <div class="card-inner">
+        <div class="card-media">
+          <img src="/images/card6.jpg" alt="Memory 6" loading="lazy">
+        </div>
+        <div class="card-body">
+          <span class="chapter-badge">Chapter 06</span>
+          <h2 class="card-title">Endless Possibilities</h2>
+          <p class="card-story">Another year older, wiser, and even more incredible.</p>
+          <div class="card-quote">"Count your age by friends, not years."</div>
+        </div>
       </div>
-      <div class="chapter-badge">Chapter 06</div>
-      <h2 class="card-title">Endless Possibilities</h2>
-      <p class="card-story">Another year older, wiser, and even more incredible.</p>
-      <div class="card-quote">"Count your age by friends, not years."</div>
-      <div class="bday-wish-tag">🎁 Wishing you all the love in the world.</div>
     </section>
 
     <!-- Card 7: Finale -->
-    <section class="mobile-card finale-card" id="chapter-7">
-      <div class="card-media">
-        <img src="/images/card7.jpg" alt="Memory 7" loading="lazy">
+    <section class="snap-card finale-card" id="chapter-7">
+      <div class="card-inner">
+        <div class="card-media">
+          <img src="/images/card7.jpg" alt="Memory 7" loading="lazy">
+        </div>
+        <div class="card-body finale-body">
+          <span class="chapter-badge">Finale</span>
+          <h2 class="card-title">Cheers to You!</h2>
+          <p class="card-story">Here's to a brand new chapter filled with success, peace, and pure happiness.</p>
+          <button class="celebrate-btn" id="celebrateBtn">TAP TO CELEBRATE 🎉</button>
+        </div>
       </div>
-      <div class="chapter-badge" style="justify-content:center;">Finale</div>
-      <h2 class="card-title" style="font-size:2.2rem;">Cheers to You!</h2>
-      <p class="card-story">Here's to a brand new chapter filled with success, peace, and pure happiness.</p>
-      <button class="celebrate-btn" id="celebrateBtn">TAP TO CELEBRATE</button>
     </section>
 
   </main>
 
-  <!-- Bottom Navigation Bar for 7 Cards -->
-  <nav class="mobile-nav-bar">
-    <button class="nav-dot active" aria-label="Chapter 0" onclick="scrollToChapter(0)"></button>
-    <button class="nav-dot" aria-label="Chapter 1" onclick="scrollToChapter(1)"></button>
-    <button class="nav-dot" aria-label="Chapter 2" onclick="scrollToChapter(2)"></button>
-    <button class="nav-dot" aria-label="Chapter 3" onclick="scrollToChapter(3)"></button>
-    <button class="nav-dot" aria-label="Chapter 4" onclick="scrollToChapter(4)"></button>
-    <button class="nav-dot" aria-label="Chapter 5" onclick="scrollToChapter(5)"></button>
-    <button class="nav-dot" aria-label="Chapter 6" onclick="scrollToChapter(6)"></button>
-    <button class="nav-dot" aria-label="Chapter 7" onclick="scrollToChapter(7)"></button>
+  <!-- Bottom Thumb Navigation Dots -->
+  <nav class="touch-nav-bar" id="touchNav">
+    <div class="nav-dot active" data-index="0"></div>
+    <div class="nav-dot" data-index="1"></div>
+    <div class="nav-dot" data-index="2"></div>
+    <div class="nav-dot" data-index="3"></div>
+    <div class="nav-dot" data-index="4"></div>
+    <div class="nav-dot" data-index="5"></div>
+    <div class="nav-dot" data-index="6"></div>
+    <div class="nav-dot" data-index="7"></div>
   </nav>
 
-  <!-- Floating Audio Control -->
-  <button class="floating-mute-btn" id="muteBtn" aria-label="Toggle Audio">
-    🔊
-  </button>
+  <!-- Floating Audio Button -->
+  <button class="touch-audio-btn" id="muteBtn" aria-label="Toggle Audio">🔊</button>
 
   <script src="script.js"></script>
 </body>
