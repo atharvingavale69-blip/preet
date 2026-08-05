@@ -3,7 +3,7 @@
 :root {
   /* Ethereal Velvet Canvas - Luxury Non-Dark Editorial Aesthetic */
   --bg: #FAF7F2;                     /* Warm Champagne Canvas Backdrop */
-  --card-bg: rgba(255, 255, 255, 0.94);
+  --card-bg: rgba(255, 255, 255, 0.95);
   --text-main: #121212;              /* Deep Charcoal Ink */
   --text-muted: #737373;             /* Warm Editorial Gray */
   
@@ -12,7 +12,7 @@
   --accent-glow: rgba(197, 155, 39, 0.2);
   
   --border-color: rgba(229, 226, 218, 0.9);
-  --card-shadow: 0 30px 60px -12px rgba(18, 18, 18, 0.08), 0 0 1px rgba(0, 0, 0, 0.12);
+  --card-shadow: 0 20px 50px -10px rgba(18, 18, 18, 0.08), 0 0 1px rgba(0, 0, 0, 0.12);
 }
 
 * {
@@ -23,31 +23,31 @@
 
 html, body {
   width: 100%;
-  height: 100%;
   background-color: var(--bg);
   color: var(--text-main);
   font-family: 'Plus Jakarta Sans', sans-serif;
   line-height: 1.6;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  /* Fix Mobile Scroll Blocking */
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS Safari */
 }
 
 /* =========================================
-   Emergent Zoom-In & Scroll Keyframe Animations 
+   Emergent Zoom-In Keyframe Animations 
 ========================================= */
 
 @keyframes emergentZoomIn {
   0% {
     opacity: 0;
-    transform: scale(0.82) translateY(80px) rotateX(-10deg);
-    filter: blur(12px);
-  }
-  60% {
-    filter: blur(0px);
+    transform: scale(0.85) translateY(50px);
+    filter: blur(10px);
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0) rotateX(0deg);
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
   }
 }
 
@@ -84,6 +84,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 16px;
+  pointer-events: auto;
 }
 
 .nav-marker-item {
@@ -141,10 +142,15 @@ html, body {
   opacity: 0.6;
 }
 
-/* Stack Scroll Section Container */
+/* =========================================
+   STACK WRAPPER & MOBILE SCROLL FIX
+========================================= */
+
 .stack-wrapper {
   position: relative;
   width: 100%;
+  /* Essential: Gives enough vertical space for scroll event calculation */
+  height: 500vh; 
   z-index: 1;
 }
 
@@ -152,40 +158,42 @@ html, body {
   position: sticky;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  perspective: 1400px; /* High perspective for emergent zoom-in */
+  /* Fixed: Removed overflow: hidden so touch events pass through cleanly */
+  perspective: 1200px;
+  touch-action: pan-y; /* Enables smooth vertical touch scrolling */
 }
 
 /* Emergent Zoom Card Layout */
 .journey-card {
   position: absolute;
-  width: calc(100% - 40px);
+  width: calc(100% - 32px);
   max-width: 920px;
   background: var(--card-bg);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-radius: clamp(20px, 3vw, 32px);
-  padding: clamp(24px, 3.5vw, 42px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: clamp(16px, 3vw, 28px);
+  padding: clamp(20px, 3.5vw, 40px);
   border: 1px solid var(--border-color);
   display: grid;
   grid-template-columns: 0.95fr 1.05fr;
-  gap: clamp(22px, 3.5vw, 40px);
+  gap: clamp(20px, 3.5vw, 36px);
   align-items: center;
   box-shadow: var(--card-shadow);
   transform-origin: center center;
-  will-change: transform, opacity, filter;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, filter 0.5s ease;
+  will-change: transform, opacity;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  pointer-events: auto; /* Ensures card content remains interactive */
 }
 
 /* Zoom-in Class for JS Trigger */
 .journey-card.is-emerging {
-  animation: emergentZoomIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: emergentZoomIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Hero / Cover Card */
@@ -196,28 +204,28 @@ html, body {
   align-items: center;
   justify-content: center;
   background: #FFFFFF;
-  padding: clamp(48px, 7vw, 80px) clamp(24px, 5vw, 48px);
-  border-radius: clamp(20px, 3vw, 32px);
+  padding: clamp(36px, 6vw, 70px) clamp(20px, 4vw, 40px);
+  border-radius: clamp(16px, 3vw, 28px);
   border: 1px solid rgba(229, 226, 218, 0.8);
 }
 
 .hero-subtitle {
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.75rem, 1.5vw, 0.88rem);
-  letter-spacing: 5px;
+  font-size: clamp(0.72rem, 1.4vw, 0.85rem);
+  letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--accent-terracotta);
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.8rem, 7vw, 5.2rem);
+  font-size: clamp(2.4rem, 6.5vw, 4.8rem);
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.05;
   color: var(--text-main);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .hero-title em {
@@ -227,10 +235,10 @@ html, body {
 }
 
 .hero-footer-text {
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-muted);
-  font-size: clamp(0.7rem, 1.2vw, 0.8rem);
+  font-size: clamp(0.68rem, 1.1vw, 0.78rem);
   font-weight: 600;
 }
 
@@ -238,12 +246,11 @@ html, body {
 .card-img-wrap {
   width: 100%;
   aspect-ratio: 4 / 3;
-  border-radius: clamp(14px, 2vw, 20px);
+  border-radius: clamp(12px, 2vw, 18px);
   overflow: hidden;
   position: relative;
   background: #F0EDE6;
   border: 1px solid var(--border-color);
-  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.06);
 }
 
 .card-img-wrap img {
@@ -251,11 +258,6 @@ html, body {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.journey-card:hover .card-img-wrap img {
-  transform: scale(1.08);
 }
 
 /* Card Text Content */
@@ -267,12 +269,12 @@ html, body {
 
 .chapter-badge {
   font-family: 'Cinzel', serif;
-  font-size: clamp(0.68rem, 1vw, 0.78rem);
-  letter-spacing: 2.5px;
+  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent-terracotta);
   font-weight: 700;
-  margin-bottom: clamp(10px, 1.5vh, 14px);
+  margin-bottom: clamp(8px, 1.2vh, 12px);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -281,50 +283,49 @@ html, body {
 .chapter-badge::before {
   content: '';
   display: inline-block;
-  width: 22px;
+  width: 18px;
   height: 1.5px;
   background: var(--accent-terracotta);
 }
 
 .card-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.75rem, 3.5vw, 2.6rem);
-  line-height: 1.12;
-  margin-bottom: clamp(10px, 1.5vh, 14px);
+  font-size: clamp(1.5rem, 3.2vw, 2.3rem);
+  line-height: 1.15;
+  margin-bottom: clamp(8px, 1.2vh, 12px);
   font-weight: 600;
   color: var(--text-main);
 }
 
 .card-story {
-  font-size: clamp(0.9rem, 1.35vw, 1.02rem);
+  font-size: clamp(0.88rem, 1.3vw, 0.98rem);
   color: var(--text-muted);
-  line-height: 1.65;
-  margin-bottom: clamp(12px, 1.8vh, 18px);
+  line-height: 1.6;
+  margin-bottom: clamp(10px, 1.5vh, 14px);
 }
 
 .card-quote {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(0.95rem, 1.45vw, 1.1rem);
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
   color: var(--text-main);
-  line-height: 1.5;
+  line-height: 1.45;
   font-style: italic;
   border-left: 2px solid var(--accent-gold);
-  padding: 8px 0 8px 18px;
-  margin-bottom: clamp(12px, 1.8vh, 18px);
+  padding: 6px 0 6px 14px;
+  margin-bottom: clamp(10px, 1.5vh, 14px);
   background: rgba(197, 155, 39, 0.05);
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 8px 8px 0;
 }
 
 .bday-wish-tag {
-  font-size: clamp(0.78rem, 1.2vw, 0.88rem);
+  font-size: clamp(0.75rem, 1.1vw, 0.85rem);
   color: var(--accent-terracotta);
   font-weight: 700;
-  letter-spacing: 0.5px;
 }
 
 /* Destination Final Section */
 .destination-section {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
@@ -332,7 +333,7 @@ html, body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 80px 24px;
+  padding: 60px 20px;
   background: #F4EFF8;
   border-top: 1px solid var(--border-color);
   position: relative;
@@ -341,52 +342,50 @@ html, body {
 
 .dest-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.8rem, 8vw, 5.8rem);
-  margin-bottom: 18px;
+  font-size: clamp(2.4rem, 7vw, 5.2rem);
+  margin-bottom: 16px;
   line-height: 1.05;
   color: var(--text-main);
 }
 
 .dest-quote {
-  max-width: 680px;
-  font-size: clamp(0.98rem, 1.7vw, 1.25rem);
+  max-width: 650px;
+  font-size: clamp(0.92rem, 1.6vw, 1.18rem);
   color: var(--text-muted);
-  line-height: 1.65;
+  line-height: 1.6;
   font-style: italic;
   font-family: 'Playfair Display', serif;
-  margin-bottom: 36px;
+  margin-bottom: 28px;
 }
 
 .celebrate-btn {
   background: var(--text-main);
   color: #FFFFFF;
   border: none;
-  padding: 18px 46px;
+  padding: 16px 40px;
   font-family: 'Cinzel', serif;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   letter-spacing: 2px;
   text-transform: uppercase;
   border-radius: 50px;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 12px 28px rgba(18, 18, 18, 0.15);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 24px rgba(18, 18, 18, 0.12);
+  transition: all 0.3s ease;
 }
 
-.celebrate-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-  background: var(--accent-terracotta);
-  box-shadow: 0 16px 36px rgba(180, 83, 9, 0.3);
+.celebrate-btn:active {
+  transform: scale(0.96);
 }
 
 /* Floating Audio Control */
 .floating-mute-btn {
   position: fixed;
-  bottom: 28px;
-  left: 28px; /* Left side shift so right markers remain unobstructed */
+  bottom: 20px;
+  left: 20px;
   z-index: 9999;
-  width: 50px;
-  height: 50px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background: #FFFFFF;
   border: 1px solid var(--border-color);
@@ -395,19 +394,12 @@ html, body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-  animation: subtleFloat 4s infinite ease-in-out;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.floating-mute-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .mute-svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 /* Entry Overlay Screen */
@@ -415,101 +407,97 @@ html, body {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: rgba(250, 247, 242, 0.96);
+  background: rgba(250, 247, 242, 0.98);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.6s ease;
+  touch-action: none; /* Prevents scroll while overlay is active */
 }
 
 .entry-card {
   text-align: center;
   background: #FFFFFF;
   border: 1px solid var(--border-color);
-  padding: 48px 36px;
-  border-radius: 28px;
-  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.06);
-  max-width: 90%;
-  width: 420px;
+  padding: 36px 24px;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+  width: calc(100% - 40px);
+  max-width: 380px;
 }
 
 .entry-badge {
   font-family: 'Cinzel', serif;
-  font-size: 0.78rem;
-  letter-spacing: 2.5px;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
   color: var(--accent-terracotta);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   font-weight: 700;
 }
 
 .entry-title {
   font-family: 'Playfair Display', serif;
-  font-size: 2.3rem;
+  font-size: 2rem;
   color: var(--text-main);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .entry-sub {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 }
 
 .entry-btn {
   background: var(--text-main);
   color: #FFFFFF;
   border: none;
-  padding: 15px 40px;
+  padding: 14px 36px;
   font-family: 'Cinzel', serif;
-  font-size: 0.88rem;
-  letter-spacing: 2px;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
   font-weight: 700;
   border-radius: 50px;
   cursor: pointer;
-  transition: transform 0.25s ease, background 0.25s ease;
-}
-
-.entry-btn:hover {
-  transform: translateY(-2px);
-  background: var(--accent-terracotta);
 }
 
 /* =========================================
-   MOBILE RESPONSIVE & SIDE MARKERS FIT
+   MOBILE TOUCH OPTIMIZATION (Max Width 768px)
 ========================================= */
 @media (max-width: 768px) {
   .side-nav-markers {
-    right: 12px;
-    gap: 12px;
+    right: 10px;
+    gap: 10px;
   }
 
   .nav-marker-item {
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
   }
 
   .nav-marker-item::after {
-    display: none; /* Hide labels on small touch screens for clean view */
+    display: none;
   }
 
   .journey-card {
     grid-template-columns: 1fr;
-    gap: 14px;
-    padding: 18px;
-    width: calc(100% - 36px);
-    border-radius: 22px;
+    gap: 12px;
+    padding: 16px;
+    width: calc(100% - 24px);
+    border-radius: 20px;
+    max-height: 85vh; /* Prevents card overflow on short mobile screens */
+    overflow-y: auto; /* Internal card scroll fallback if content is long */
   }
 
   .card-img-wrap {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
   }
 
   .floating-mute-btn {
-    bottom: 18px;
-    left: 18px;
-    width: 44px;
-    height: 44px;
+    bottom: 16px;
+    left: 16px;
+    width: 42px;
+    height: 42px;
   }
 }
