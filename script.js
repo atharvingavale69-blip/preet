@@ -1,279 +1,154 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400;1,600&display=swap');
+document.addEventListener("DOMContentLoaded", () => {
+  const viewport = document.getElementById("appViewport");
+  const cards = document.querySelectorAll(".snap-card");
+  const navDots = document.querySelectorAll(".nav-dot");
+  const celebrateBtn = document.getElementById("celebrateBtn");
+  const muteBtn = document.getElementById("muteBtn");
 
-:root {
-  --bg: #0F0F12;
-  --card-bg: rgba(28, 28, 35, 0.85);
-  --text-main: #FFFFFF;
-  --text-muted: #A1A1AA;
-  --accent-gold: #EAB308;
-  --accent-terracotta: #F97316;
-  --border-color: rgba(255, 255, 255, 0.12);
-  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
-}
+  let currentIndex = 0;
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -webkit-user-select: none;
-}
+  // 1. Native Touch Haptic Vibration (If Supported by Browser)
+  function triggerHaptic() {
+    if ("vibrate" in navigator) {
+      navigator.vibrate(15);
+    }
+  }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  height: 100dvh;
-  overflow: hidden;
-  background-color: var(--bg);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  color: var(--text-main);
-}
+  // 2. Intersection Observer for Active Card Detection & Navigation Sync
+  const observerOptions = {
+    root: viewport,
+    threshold: 0.6 // Card 60% view me aate hi active hogi
+  };
 
-/* Background Particles Canvas */
-#particleCanvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        cards.forEach((c) => c.classList.remove("active-card"));
+        entry.target.classList.add("active-card");
 
-/* =========================================
-   TOUCH SCROLL SNAP VIEWPORT (Instagram / TikTok Style)
-========================================= */
-.app-viewport {
-  position: relative;
-  z-index: 1;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  overflow-y: mandatory;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
+        const id = entry.target.id;
+        if (id && id.startsWith("chapter-")) {
+          currentIndex = parseInt(id.replace("chapter-", ""), 10);
+          updateNavDots(currentIndex);
+          triggerHaptic();
+        }
+      }
+    });
+  }, observerOptions);
 
-/* Hide Scrollbar for Native App Feel */
-.app-viewport::-webkit-scrollbar {
-  display: none;
-}
-.app-viewport {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+  cards.forEach((card) => observer.observe(card));
 
-/* Fullscreen Snap Cards */
-.snap-card {
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 16px 80px 16px; /* Space reserved for bottom thumb nav */
-}
+  // 3. Bottom Nav Dot Click to Direct Scroll
+  navDots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const idx = parseInt(dot.getAttribute("data-index"), 10);
+      scrollToCard(idx);
+    });
+  });
 
-/* Inner Card Container */
-.card-inner {
-  width: 100%;
-  max-width: 420px;
-  height: 100%;
-  max-height: 680px;
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color);
-  border-radius: 28px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  transform: scale(0.96);
-  opacity: 0.8;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
+  function updateNavDots(index) {
+    navDots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === index);
+    });
+  }
 
-.snap-card.active-card .card-inner {
-  transform: scale(1);
-  opacity: 1;
-}
+  function scrollToCard(index) {
+    const target = document.getElementById(`chapter-${index}`);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  }
 
-/* Hero Section Special View */
-.hero-card .card-content {
-  text-align: center;
-  padding: 40px 24px;
-}
+  // 4. Touch Swipe Gesture Engine (Manual fallback & smooth feel)
+  let startY = 0;
+  let endY = 0;
 
-.hero-badge {
-  font-family: 'Cinzel', serif;
-  font-size: 0.8rem;
-  letter-spacing: 3px;
-  color: var(--accent-gold);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
+  viewport.addEventListener("touchstart", (e) => {
+    startY = e.touches[0].clientY;
+  }, { passive: true });
 
-.hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  line-height: 1.1;
-  margin-bottom: 32px;
-}
+  viewport.addEventListener("touchend", (e) => {
+    endY = e.changedTouches[0].clientY;
+    handleGesture();
+  }, { passive: true });
 
-.hero-title em {
-  color: var(--accent-terracotta);
-  font-style: italic;
-}
+  function handleGesture() {
+    const diff = startY - endY;
+    if (Math.abs(diff) > 40) { // Touch Threshold 40px
+      if (diff > 0 && currentIndex < cards.length - 1) {
+        // Swiped Up -> Go to Next
+        scrollToCard(currentIndex + 1);
+      } else if (diff < 0 && currentIndex > 0) {
+        // Swiped Down -> Go to Previous
+        scrollToCard(currentIndex - 1);
+      }
+    }
+  }
 
-.swipe-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  animation: bounce 2s infinite;
-}
+  // 5. Celebration Event
+  if (celebrateBtn) {
+    celebrateBtn.addEventListener("click", () => {
+      triggerHaptic();
+      alert("🎉 Happy Birthday! Wishing you an amazing year ahead!");
+    });
+  }
 
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-50px); }
-}
+  // 6. Audio Toggle
+  let isMuted = false;
+  if (muteBtn) {
+    muteBtn.addEventListener("click", () => {
+      isMuted = !isMuted;
+      muteBtn.textContent = isMuted ? "🔇" : "🔊";
+      triggerHaptic();
+    });
+  }
 
-/* Card Media Frame */
-.card-media {
-  width: 100%;
-  flex: 1.2;
-  overflow: hidden;
-  position: relative;
-  background: #18181B;
-}
+  // 7. Background Floating Gold Particles
+  initCanvas();
+});
 
-.card-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+// Canvas Background Render Engine
+function initCanvas() {
+  const canvas = document.getElementById("particleCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
 
-/* Card Body Section */
-.card-body {
-  padding: 20px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
 
-.chapter-badge {
-  font-family: 'Cinzel', serif;
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  color: var(--accent-terracotta);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-  display: block;
-}
+  window.addEventListener("resize", () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
 
-.card-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-  line-height: 1.2;
-}
+  const particles = Array.from({ length: 30 }, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    radius: Math.random() * 2 + 1,
+    color: "rgba(234, 179, 8, 0.4)",
+    speedY: Math.random() * 0.5 + 0.2,
+    speedX: (Math.random() - 0.5) * 0.2,
+  }));
 
-.card-story {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 12px;
-}
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
 
-.card-quote {
-  font-family: 'Playfair Display', serif;
-  font-size: 0.9rem;
-  font-style: italic;
-  color: var(--accent-gold);
-  border-left: 2px solid var(--accent-gold);
-  padding-left: 10px;
-}
+    particles.forEach((p) => {
+      p.y -= p.speedY;
+      p.x += p.speedX;
 
-/* Finale Specific Button */
-.celebrate-btn {
-  width: 100%;
-  padding: 16px;
-  border-radius: 50px;
-  border: none;
-  background: linear-gradient(135deg, var(--accent-gold), var(--accent-terracotta));
-  color: #000;
-  font-family: 'Cinzel', serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  cursor: pointer;
-  box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
-  margin-top: 10px;
-}
+      if (p.y < 0) p.y = height;
+      if (p.x < 0) p.x = width;
+      if (p.x > width) p.x = 0;
 
-.celebrate-btn:active {
-  transform: scale(0.96);
-}
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    });
 
-/* =========================================
-   THUMB-ZONE BOTTOM NAVIGATION BAR
-========================================= */
-.touch-nav-bar {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2000;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-color);
-  padding: 8px 14px;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+    requestAnimationFrame(animate);
+  }
 
-.nav-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nav-dot.active {
-  width: 24px;
-  border-radius: 10px;
-  background: var(--accent-gold);
-}
-
-/* Audio Control Float */
-.touch-audio-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 2000;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid var(--border-color);
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px);
-  color: #FFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  animate();
 }
